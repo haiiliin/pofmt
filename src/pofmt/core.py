@@ -103,6 +103,10 @@ class Entry:
             + r")|(?<=%s) (?=\w)|(?=%s)))" % (_cjk_closing_punct, _cjk_opening_punct),
             re.VERBOSE,
         )
+        if self.msgid == [""]:
+            paras = [f"{para}\\n" for para in text.split("\\n")]
+            paras[-1] = paras[-1][:-2]
+            return [f'{title} ""'] + [f'"{line}"' for para in paras for line in wrapper.wrap(para)]
         return [f'{title} ""'] + [f'"{line}"' for line in wrapper.wrap(text)]
 
     def format(
